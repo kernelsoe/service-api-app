@@ -3,7 +3,7 @@ set -v
 
 # Talk to the metadata server to get the project id
 PROJECTID=$(curl -s "http://metadata.google.internal/computeMetadata/v1/project/project-id" -H "Metadata-Flavor: Google")
-REPOSITORY="github_kernelsoe_service-api-app"
+REPOSITORY="service-api"
 
 # Install logging monitor. The monitor will automatically pick up logs sent to
 # syslog.

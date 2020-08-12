@@ -6,6 +6,7 @@ const router = express.Router();
 
 const rss = require('../lib/rss')
 const rdb = require('../lib/redisdb')
+const redisearch = require('../lib/redisearch')
 const { getHostName, sleep } = require('../lib/sh')
 
 const { startCrawl } = require('../lib/crawler')
@@ -90,7 +91,7 @@ router.post('/indexSite', async (req, res, next) => {
           // data.tags = req.body.siteTags
 
           console.log(data.title)
-          rdb.send_command('FT.ADD', ['rIdx', link, '1.0', 'REPLACE', 'PARTIAL',
+          redisearch.send_command('FT.ADD', ['rIdx', link, '1.0', 'REPLACE', 'PARTIAL',
             'FIELDS', 'url', link, 'title', data.title, 'content', data.content, 'towns', ''
           ]).catch(err => console.log('err ', err))
           .catch(next)
