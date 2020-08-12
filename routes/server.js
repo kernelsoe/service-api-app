@@ -14,9 +14,11 @@ const { scrape } = require('../lib/scraper');
 const pageScraper = require('../lib/pageScraper')
 
 router.get('/ping', async (req, res) => {
-  const reply = await rdb.send_command('PING')
+  const replydb = await rdb.send_command('PING')
+  const replysearchdb = await redisearch.send_command('PING')
   res.json({
-    reply
+    replyFromRedis: replydb,
+    replyFromRedisSearch: replysearchdb
   })
 })
 
