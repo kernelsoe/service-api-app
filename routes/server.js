@@ -75,7 +75,8 @@ router.post('/indexSite', async (req, res, next) => {
     // req.body.siteTags
     console.log('✅ /indexSite ', req.body.site)
 
-    rdb.hgetall(`${domain}`)
+    // rdb.hgetall(`links:${domain}`)
+    rdb.hgetall(req.body.site)
       .then(async (links) => {
         console.log('✅ links ', links)
         res.json({
