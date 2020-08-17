@@ -1,4 +1,4 @@
-gcloud compute instances create service-api-2 \
+gcloud compute instances create service-api-asia \
     --image-family=debian-10 \
     --image-project=debian-cloud \
     --machine-type=n1-standard-4  \

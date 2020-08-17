@@ -1,16 +1,15 @@
-[
-  {
-    "url": "https://www.ribbonfarm.com/",
-    "q": "a.entry-title-link",
-    "pg_url": "https://www.ribbonfarm.com/page/$replace/",
-    "pg_q": "li.pagination-next a",
-    "pg_count": 100
-  },
-  {
-    "url": "https://www.ribbonfarm.com/",
-    "q": ".latest-series a"
-  }
-]
+[{"url": "https://www.ribbonfarm.com/","q": "a.entry-title-link","pg_url": "https://www.ribbonfarm.com/page/$replace/","pg_q": "li.pagination-next a","pg_count": 100},{"url": "https://www.ribbonfarm.com/","q": ".latest-series a"}]
+pubDateTag:.date.published.time
+[{"url": "https://www.zachleat.com/web/","q": ".posts-link.p-name.u-url"},{"url": "https://www.zachleat.com/web/notes/","q": ".posts-link.p-name.u-url"}]
+pubDateTag:em.date
+[{"url":"https://overreacted.io/","q":"h3 a"}]
+pubDateTag:article header p
+[{"url":"https://adamwathan.me/archives/","q":"li a"},{"url":"https://adamwathan.me/journal/","q":"a.text-lg.text-black"}]
+pubDateTag:.text-dark-muted p
+[{"url":"https://mxb.dev/blog/","q":".postlist__link.u-url"},{"url":"https://mxb.dev/notes/","q":".note__link","pg_url":"https://mxb.dev/notes/$replace/","pg_count":3}]
+pubDateTag:time.post__date.dt-published
+
+
 {
   "series": {
     "title": "title",
@@ -22,11 +21,29 @@
     "content": ".entry-content"
   }
 }
-
-[{"url": "https://www.zachleat.com/web/","q": ".posts-link.p-name.u-url"},{"url": "https://www.zachleat.com/web/notes/","q": ".posts-link.p-name.u-url"}]
-
-[{"url":"https://overreacted.io/","q":"h3 a"}]
-
-[{"url":"https://adamwathan.me/archives/","q":"li a"},{"url":"https://adamwathan.me/journal/","q":"a.text-lg.text-black"}]
-
 [{"url":"https://mxb.dev/blog/","q":".postlist__link.u-url"},{"url":"https://mxb.dev/notes/","q":".note__link"},{"url":"https://mxb.dev/notes/2/","q":".note__link"},{"url":"https://mxb.dev/notes/3/","q":".note__link"}]
+
+
+root:https://www.ribbonfarm.com
+pubDateTag:.date.published.time
+payloads:[{"url": "https://www.ribbonfarm.com/","q": "a.entry-title-link","pg_url": "https://www.ribbonfarm.com/page/$replace/","pg_q": "li.pagination-next a","pg_count": 100},{"url": "https://www.ribbonfarm.com/","q": ".latest-series a"}]
+
+root:https://mxb.dev
+pubDateTag:time.post__date.dt-published
+payloads:[{"url":"https://mxb.dev/blog/","q":".postlist__link.u-url"},{"url":"https://mxb.dev/notes/","q":".note__link","pg_url":"https://mxb.dev/notes/$replace/","pg_count":3}]
+
+root:https://www.zachleat.com
+pubDateTag:em.date
+payloads:[{"url": "https://www.zachleat.com/web/","q": ".posts-link.p-name.u-url"},{"url": "https://www.zachleat.com/web/notes/","q": ".posts-link.p-name.u-url"}]
+
+root:https://overreacted.io
+pubDateTag:article header p
+payloads:[{"url":"https://overreacted.io/","q":"h3 a"}]
+
+root:https://adamwathan.me
+pubDateTag:.text-dark-muted p
+payloads:[{"url":"https://adamwathan.me/archives/","q":"li a"},{"url":"https://adamwathan.me/journal/","q":"a.text-lg.text-black"}]
+
+root:
+pubDateTag:
+payloads:

@@ -13,21 +13,22 @@ router.get('/', function(req, res, next) {
   res.json({ title: 'Hi! from server' });
 });
 router.post('/register', async (req, res, next) => {
+  res.json({
+    status: 'ok'
+  })
   // console.log(req.body.payloads)
   const host = await getHostName(req.body.root)
 
   rdb.hset(`site:${host}`, req.body.root, req.body.payloads)
-  rdb.hset(`site:${host}`, req.body.root, req.body.pubDateTag)
+  rdb.hset(`site:${host}`, 'pubDateTag', req.body.pubDateTag)
   
   rdb.sadd('allsites', req.body.root)
-
+})
+router.post('/crawl', async (req, res, next) => {
   res.json({
     status: 'ok'
   })
-})
-router.post('/crawl', async (req, res, next) => {
   const host = await getHostName(req.body.site)
-
   const payloads = await JSON.parse(await rdb.hget(`site:${host}`, req.body.site))
   
   for (let i = 0; i < payloads.length; i++) {
@@ -44,13 +45,11 @@ router.post('/crawl', async (req, res, next) => {
       }
     }
   }
-  
-
+})
+router.post('/index', async (req, res, next) => {
   res.json({
     status: 'ok'
   })
-})
-router.post('/index', async (req, res, next) => {
   const host = await getHostName(req.body.site)
   const links = await rdb.hgetall(`links:${host}`)
   const tag = await rdb.hget(`site:${host}`, 'pubDateTag')// await JSON.parse()
@@ -64,9 +63,6 @@ router.post('/index', async (req, res, next) => {
       'FIELDS', 'url', url, 'title', data.title, 'content', data.content, 'pubDate', data.pubDate
     ]).catch(err => console.log('err ', err))
   }
-  res.json({
-    status: 'ok'
-  })
 })
 
 module.exports = router;
