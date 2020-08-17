@@ -1,0 +1,32 @@
+[
+  {
+    "url": "https://www.ribbonfarm.com/",
+    "q": "a.entry-title-link",
+    "pg_url": "https://www.ribbonfarm.com/page/$replace/",
+    "pg_q": "li.pagination-next a",
+    "pg_count": 100
+  },
+  {
+    "url": "https://www.ribbonfarm.com/",
+    "q": ".latest-series a"
+  }
+]
+{
+  "series": {
+    "title": "title",
+    "content": "div#hfeed.hfeed"
+  },
+  "blog": {
+    "title": "h1.entry-title",
+    "pubDate": ".date.published.time",
+    "content": ".entry-content"
+  }
+}
+
+[{"url": "https://www.zachleat.com/web/","q": ".posts-link.p-name.u-url"},{"url": "https://www.zachleat.com/web/notes/","q": ".posts-link.p-name.u-url"}]
+
+[{"url":"https://overreacted.io/","q":"h3 a"}]
+
+[{"url":"https://adamwathan.me/archives/","q":"li a"},{"url":"https://adamwathan.me/journal/","q":"a.text-lg.text-black"}]
+
+[{"url":"https://mxb.dev/blog/","q":".postlist__link.u-url"},{"url":"https://mxb.dev/notes/","q":".note__link"},{"url":"https://mxb.dev/notes/2/","q":".note__link"},{"url":"https://mxb.dev/notes/3/","q":".note__link"}]
