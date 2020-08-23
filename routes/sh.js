@@ -8,6 +8,7 @@ const { crawl } = require('../lib/mycrawler')
 const rdb = require('../lib/redisdb')
 const redisearch = require('../lib/redisearch')
 const Axios = require('axios')
+const rss = require('../lib/rss')
 
 router.get('/', function(req, res, next) {
   res.json({ title: 'Hi! from server' });
@@ -20,7 +21,7 @@ router.post('/register', async (req, res, next) => {
   const host = await getHostName(req.body.root)
 
   rdb.hset(`site:${host}`, req.body.root, req.body.payloads)
-  rdb.hset(`site:${host}`, 'pubDateTag', req.body.pubDateTag)
+  rdb.hset(`site:${host}`, 'pubDateTag', req.body.pubDateTag ? req.body.pubDate : '')
   
   rdb.sadd('allsites', req.body.root)
 })
@@ -62,6 +63,12 @@ router.post('/index', async (req, res, next) => {
     redisearch.send_command('FT.ADD', ['rIdx', url, '1.0', 'REPLACE', 'PARTIAL',
       'FIELDS', 'url', url, 'title', data.title, 'content', data.content, 'pubDate', data.pubDate
     ]).catch(err => console.log('err ', err))
+
+    const exists = await rdb.hget('links', url)
+    if (!exists) {
+      rdb.hset('links', url, 1)
+      rdb.hincrby('links', 'count', 1)
+    }
   }
 })
 

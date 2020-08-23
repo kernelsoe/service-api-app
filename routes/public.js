@@ -26,205 +26,150 @@ router.get('/search', async (req, res, next) => {
   })
 })
 
+router.post('/submit', async (req, res, next) => {
+  console.log(req.body)
+  
+  res.json({
+    status: 'ok'
+  })
+
+  rdb.zadd('submissions', req.body.ts, req.body.link)
+})
+
 router.get('/', function(req, res, next) {
   res.json({ title: 'Hi!' });
 });
 // ✅
-router.post('/commit', async (req, res, next) => {
-  // const timestamp = new Date().getTime()
-  const towns = req.body.towns.split(',')
-  const url = req.body.url
-  const domain = await getHostName(url)
+// router.post('/commit', async (req, res, next) => {
+//   // const timestamp = new Date().getTime()
+//   const towns = req.body.towns.split(',')
+//   const url = req.body.url
+//   const domain = await getHostName(url)
 
-  const urlExists = await rdb.hget(url, 'url')
+//   const urlExists = await rdb.hget(url, 'url')
 
-  console.log(towns, req.body.towns)
-  console.log(url)
-  console.log(domain)
+//   console.log(towns, req.body.towns)
+//   console.log(url)
+//   console.log(domain)
 
-  if (!urlExists) {
-    const data = await scrape(url).catch(next)
+//   if (!urlExists) {
+//     const data = await scrape(url).catch(next)
 
-    res.json({
-      status: 'ok'
-    })
+//     res.json({
+//       status: 'ok'
+//     })
 
-    towns.forEach(town => {
-      // index towns if nx
-      rdb.hget(`towns`, town)
-        .then(async (indexed) => {
-          if (!indexed) {
-            rdb.send_command('FT.ADD',
-              ['tIdx', town, '1.0', 'REPLACE', 'PARTIAL',
-                'FIELDS', 'name', town, 'about', '', 'is', ''
-              ])
-              .catch(err => console.log('err ', err))
-            rdb.hset(`towns`, town, true)
-          }
-        })
-      // zadd site to towns if not nx
-      rdb.hget(`t:${town}:urls`, url)
-        .then(async (exists) => {
-          if (!exists) {
-            rdb.xadd(`t:${town}:str`, '*', 'post', url)
-              .then(result => console.log('✅ str ', `t:${town}:str`, result))
-            rdb.hincrby(`t:${town}:urls`, url, 1)
-          }
-        })
-    })
+//     towns.forEach(town => {
+//       // index towns if nx
+//       rdb.hget(`towns`, town)
+//         .then(async (indexed) => {
+//           if (!indexed) {
+//             rdb.send_command('FT.ADD',
+//               ['tIdx', town, '1.0', 'REPLACE', 'PARTIAL',
+//                 'FIELDS', 'name', town, 'about', '', 'is', ''
+//               ])
+//               .catch(err => console.log('err ', err))
+//             rdb.hset(`towns`, town, true)
+//           }
+//         })
+//       // zadd site to towns if not nx
+//       rdb.hget(`t:${town}:urls`, url)
+//         .then(async (exists) => {
+//           if (!exists) {
+//             rdb.xadd(`t:${town}:str`, '*', 'post', url)
+//               .then(result => console.log('✅ str ', `t:${town}:str`, result))
+//             rdb.hincrby(`t:${town}:urls`, url, 1)
+//           }
+//         })
+//     })
   
-    // index url if nx
-    rdb.hget(`links:${domain}`, url)
-      .then(async (exists) => {
-        if (!exists) {
-          rdb.send_command('FT.ADD', ['rIdx', url, '1.0', 'REPLACE', 'PARTIAL',
-            'FIELDS', 'url', url, 'title', data.title, 'content', data.content, 'towns', req.body.towns
-          ]).catch(err => console.log('err ', err))
-        }
-      })
+//     // index url if nx
+//     rdb.hget(`links:${domain}`, url)
+//       .then(async (exists) => {
+//         if (!exists) {
+//           rdb.send_command('FT.ADD', ['rIdx', url, '1.0', 'REPLACE', 'PARTIAL',
+//             'FIELDS', 'url', url, 'title', data.title, 'content', data.content, 'towns', req.body.towns
+//           ]).catch(err => console.log('err ', err))
+//         }
+//       })
   
-    // index domain if nx
-    rdb.hget('sites', domain)
-      .then(siteExists => {
-        if (!siteExists) {
-          rdb.hset('sites', domain, true)
-            .catch(err => console.log('hset err @ /commit ', err))
-          rdb.send_command('FT.ADD', ['doIdx', domain, '1.0', 'REPLACE', 'PARTIAL', 'FIELDS', 'url', domain, 'title', ''])
-            .catch(err => console.log('FT.ADD doIdx err @ /commit ', err))
-        }
-      })
-  } else {
-    res.json({
-      status: 'already exists!'
-    })
-  }
-})
+//     // index domain if nx
+//     rdb.hget('sites', domain)
+//       .then(siteExists => {
+//         if (!siteExists) {
+//           rdb.hset('sites', domain, true)
+//             .catch(err => console.log('hset err @ /commit ', err))
+//           rdb.send_command('FT.ADD', ['doIdx', domain, '1.0', 'REPLACE', 'PARTIAL', 'FIELDS', 'url', domain, 'title', ''])
+//             .catch(err => console.log('FT.ADD doIdx err @ /commit ', err))
+//         }
+//       })
+//   } else {
+//     res.json({
+//       status: 'already exists!'
+//     })
+//   }
+// })
 
 // RSS
-router.get('/getRSS', async (req, res, next) => {
-  const pages = []
-  const items = await rdb.srandmember('postbox:rand', 10)
-  if (items && items.length) {
-    for (let i = 0; i < items.length; i++) {
-      const page = JSON.parse(items[i])
-      // console.log(page)
-      pages.push(page)
-    }
-  
-    res.json({
-      pages
-    })
-  } else {
-    res.json({
-      pages: []
-    })
-  }
-})
-router.get('/getRssByChrono', async (req, res, next) => {
-  const pages = []
-  const items = await rdb.zrevrangebyscore('postbox:chro', '+inf', '-inf', 'LIMIT', req.query.offset, 10)
-    .catch(err => {
-      console.log(err)
-      res.json({
-        status: 'error'
-      })
-    })
-    .catch(next)
-
-  if (items && items.length) {
-    for (let i = 0; i < items.length; i++) {
-      const page = JSON.parse(items[i])
-      // console.log(page)
-      pages.push(page)
-    }
-  
-    res.json({
-      pages
-    })
-  } else {
-    res.json({
-      pages: []
-    })
-  }
-})
-router.get('/getRssByDomain', async (req, res, next) => {
-  const domain = req.query.domain.includes('feedburner.com') ? 'feedburner' : req.query.domain
-  const pages = []
-  const items = await rdb.zrevrangebyscore(`readrss:${domain}`, '+inf', '-inf')
-    .catch(err => {
-      console.log(err)
-      res.json({
-        status: 'error'
-      })
-    })
-    .catch(next)
-
-  if (items && items.length) {
-    for (let i = 0; i < items.length; i++) {
-      const page = JSON.parse(items[i])
-      // console.log(page)
-      pages.push(page)
-    }
-  
-    res.json({
-      pages
-    })
-  } else {
-    res.json({
-      pages: []
-    })
-  }
-})
 router.post('/submitRSS', async (req, res, next) => {
-  const url = req.body.url
-
-  rdb.hget('rssurls', url)
-    .then(exists => {
-      if (!exists) {
-        rdb.hset('rssurls', url, 1)
-        rdb.hincrby('totalrssurls', 'count', 1)
-      }
-    })
-
-  const data = await rss.parseRSS(url).catch(err => console.log('scraped data err : ', err)).catch(next)
-  
   let domain
+  const data = await rss.parseRSS(req.body.url).catch(err => console.log('scraped data err : ', err)).catch(next)
   const domainToTest = await getHostName(req.body.url).catch(err => console.log('domain err : ', err)).catch(next)
+
   if (domainToTest.includes('feedburner')) domain = 'feedburner'
   else domain = domainToTest
 
-  for (let i = 0; i < data.items.length; i++) {
-    let content
-    let pubDate 
-
-    const item = data.items[i]
-
-    const link = item.link.startsWith('http') ? item.link : domain + item.link
-    
-    if (item.contentSnippet) content = item.contentSnippet.slice(0, 180)
-    else if (item.description) content = item.description.slice(0, 180)
-
-    if (item.pubDate) pubDate = item.pubDate
-    else pubDate = 1000000000000
-
-    const payload = {
-      link,
-      title: item.title,
-      content,
-      pubDate,
-      rssurl: url,
-      author: data.title
-    }
-
-    rdb.zadd('postbox:chro', new Date(pubDate).getTime(), JSON.stringify(payload))
-    rdb.sadd('postbox:rand', JSON.stringify(payload))
-    rdb.zadd(`readrss:${domain}`, new Date(pubDate).getTime(), JSON.stringify(payload))
-    // rdb.hset(url, link, JSON.stringify(payload))
-  }
-  console.log(data.title, ' ✅ ', data.items.length)
+  console.log('total ', data.items.length)
 
   res.json({
-    status: 'ok bro'
+    status: 'ok'
+  })
+
+  // data.items.forEach(async (item) => {
+  for (let i = 0; i < data.items.length; i++) {
+    const original = data.items[i]
+
+    let item = {
+      title: original.title,
+      pubDate: original.pubDate ? original.pubDate : original.updated,
+      author: data.title,
+      rss: req.body.url,
+      link: original.link.startsWith('http') ? original.link : domain + original.link,
+      content: original.contentSnippet ? original.contentSnippet.slice(0, 120) + ' ...' : original.description.slice(0, 120) + ' ...'
+    }
+    
+    if (item.pubDate === null || undefined) item.pubDate = 1000000000000
+
+    // console.log(item.title, '@ ' ,item.author)
+    const linkExists = await rdb.hget(`postbox:links`, original.link).catch(err => console.log('hget rss:domain err : ', err))
+
+    if (!linkExists) {
+      const data = JSON.stringify(item)
+      const ts = new Date(item.pubDate).getTime()
+
+      // console.log(item)
+      rdb.hincrby(`postbox:links`, item.link, 1)
+      // for global
+      if (i < 10) {
+        rdb.sadd('postbox:rand', data)
+      }
+      rdb.zadd('postbox:chro', ts, data)
+      // for domain
+      rdb.zadd(`postbox:${domain}`, ts, data)
+    }
+  }
+})
+router.get('/postboxrand', async (req, res, next) => {
+  const randomPages = await rdb.srandmember('postbox:rand', 10)
+  res.json({
+    rss: randomPages
+  })
+})
+
+router.get('/getLinksCount', async (req, res, next) => {
+  const links = await rdb.hget('links', 'count')
+  res.json({
+    links
   })
 })
 
