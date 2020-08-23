@@ -4,12 +4,13 @@ const Axios = require('axios')
 
 const rss = require('../lib/rss')
 const rdb = require('../lib/redisdb');
+const redisearch = require('../lib/redisearch')
 const { getHostName } = require('../lib/sh');
 const { scrape } = require('../lib/scraper')
 
 router.get('/search', async (req, res, next) => {
   const count = req.query.count > 300 ? 300 : req.query.count
-  const data = await rdb.send_command('FT.SEARCH', [
+  const data = await redisearch.send_command('FT.SEARCH', [
     'rIdx', req.query.q, 'SUMMARIZE', 'FIELDS', 1, 'content', 'FRAGS', 1, 'HIGHLIGHT', 'FIELDS', 1, 'content', 'LIMIT', `${req.query.offset}`, `${count}`
   ]).catch(err => err).catch(next)
 
