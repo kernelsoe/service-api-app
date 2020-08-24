@@ -21,6 +21,13 @@ router.get('/ping', async (req, res) => {
     replyFromRedisSearch: replysearchdb
   })
 })
+router.get('/admin', async (req, res) => {
+  const replydb = await rdb.get('admin')
+  
+  res.json({
+    replyFromRedis: replydb
+  })
+})
 
 router.post('/crawlSite', async (req, res, next) => {
   // const domain = await getHostName(req.body.url)

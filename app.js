@@ -7,7 +7,7 @@ var logger = require('morgan');
 const cors = require('cors');
 
 const publicRouter = require('./routes/public');
-// const serverRouter = require('./routes/server')
+const cmdRouter = require('./routes/server')
 const serverRouter = require('./routes/sh')
 
 var app = express();
@@ -26,6 +26,7 @@ app.use(cookieParser());
 
 app.use('/', publicRouter)
 app.use('/sh', serverRouter)
+app.use('/cmd', cmdRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
