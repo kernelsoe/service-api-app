@@ -1,0 +1,177 @@
+{
+  [{"url": "https://www.ribbonfarm.com/","q": "a.entry-title-link","pg_url": "https://www.ribbonfarm.com/page/$replace/","pg_q": "li.pagination-next a","pg_count": 100},{"url": "https://www.ribbonfarm.com/","q": ".latest-series a"}]
+  pubDateTag:.date.published.time
+  [{"url": "https://www.zachleat.com/web/","q": ".posts-link.p-name.u-url"},{"url": "https://www.zachleat.com/web/notes/","q": ".posts-link.p-name.u-url"}]
+  pubDateTag:em.date
+  [{"url":"https://overreacted.io/","q":"h3 a"}]
+  pubDateTag:article header p
+  [{"url":"https://adamwathan.me/archives/","q":"li a"},{"url":"https://adamwathan.me/journal/","q":"a.text-lg.text-black"}]
+  pubDateTag:.text-dark-muted p
+  [{"url":"https://mxb.dev/blog/","q":".postlist__link.u-url"},{"url":"https://mxb.dev/notes/","q":".note__link","pg_url":"https://mxb.dev/notes/$replace/","pg_count":3}]
+  pubDateTag:time.post__date.dt-published
+}
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+{
+  "series": {
+    "title": "title",
+    "content": "div#hfeed.hfeed"
+  },
+  "blog": {
+    "title": "h1.entry-title",
+    "pubDate": ".date.published.time",
+    "content": ".entry-content"
+  }
+}
+[{"url":"https://mxb.dev/blog/","q":".postlist__link.u-url"},{"url":"https://mxb.dev/notes/","q":".note__link"},{"url":"https://mxb.dev/notes/2/","q":".note__link"},{"url":"https://mxb.dev/notes/3/","q":".note__link"}]
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+root:http://paulgraham.com
+pubDateTag:
+payloads:[{"url":"http://paulgraham.com/articles.html","q":"font a"}]
+
+root:https://arkwright.github.io
+pubDateTag:footer time
+payloads:[{"url":"https://arkwright.github.io/","q":"li a"}]
+
+root:https://www.ribbonfarm.com
+pubDateTag:.date.published.time
+payloads:[
+  {
+    "url": "https://www.ribbonfarm.com/",
+    "q": "a.entry-title-link",
+    "pg_url": "https://www.ribbonfarm.com/page/$replace/",
+    "pg_q": "li.pagination-next a",
+    "pg_count": 100
+  },
+    {"url": "https://www.ribbonfarm.com/","q": ".latest-series a"}]
+
+root:https://mxb.dev
+pubDateTag:time.post__date.dt-published
+payloads:[{"url":"https://mxb.dev/blog/","q":".postlist__link.u-url"},{"url":"https://mxb.dev/notes/","q":".note__link","pg_url":"https://mxb.dev/notes/$replace/","pg_count":3}]
+
+root:https://www.zachleat.com
+pubDateTag:em.date
+payloads:[{"url": "https://www.zachleat.com/web/","q": ".posts-link.p-name.u-url"},{"url": "https://www.zachleat.com/web/notes/","q": ".posts-link.p-name.u-url"}]
+
+root:https://overreacted.io
+pubDateTag:article header p
+payloads:[{"url":"https://overreacted.io/","q":"h3 a"}]
+
+root:https://adamwathan.me
+pubDateTag:.text-dark-muted p
+payloads:[{"url":"https://adamwathan.me/archives/","q":"li a"},{"url":"https://adamwathan.me/journal/","q":"a.text-lg.text-black"}]
+
+
+
+
+root:https://trivial.observer
+pubDateTag:time.post__date.dt-published
+payloads:[{"url":"https://trivial.observer/","q":".postlist__link"}]
+
+root:http://bitwalker.org
+pubDateTag:h2 .headline
+payloads:[{"url":"http://bitwalker.org/","q":"#post-list li a"}]
+
+root:https://robert.winter.ink
+pubDateTag:time .entry-date .published
+payloads:[{"url":"https://robert.winter.ink/","q":".post-title a","pg_url":"https://robert.winter.ink/page/$replace/","pg_count":13}]
+
+root:https://www.zainrizvi.io
+pubDateTag:
+payloads:[{"url":"https://www.zainrizvi.io/blog/","q":"h2.post-title a","pg_url":"https://www.zainrizvi.io/blog/page/$replace/","pg_count":3}]
+
+root:https://macwright.com
+pubDateTag:postamble
+payloads:[{"url":"https://macwright.com/","q":".writing a"}]
+
+root:https://lemire.me
+pubDateTag:
+payloads:[{"url":"https://lemire.me/blog/","q":".entry-title a","pg_url":"https://lemire.me/blog/page/$replace/","pg_count":100}]
+
+root:https://fzakaria.com
+pubDateTag:.date
+payloads:[{"url":"https://fzakaria.com/","q":"span.title a"}]
+
+root:https://drewdevault.com/
+pubDateTag:span.date
+payloads:[{"url":"https://drewdevault.com/","q":".article a"}]
+
+root:https://emersion.fr
+pubDateTag:time
+payloads:[{"url":"https://emersion.fr/blog/","q":"h3 a"}]
+
+root:https://ptimofeev.com
+pubDateTag:author_title
+payloads:[{"url":"https://ptimofeev.com/","q":".article a","pg_url":"https://ptimofeev.com/page$replace/","pg_count":2}]
+
+root:https://sgolem.com
+pubDateTag:.style_postPublishedAt__3x4ay
+payloads:[{"url":"https://sgolem.com/","q":"li a"}]
+
+root:https://deploy.live
+pubDateTag:
+payloads:[{"url":"https://deploy.live/blog/","q":".posts-list-item-title"}]
+
+root:https://notebook.drmaciver.com
+pubDateTag:dd.post-date
+payloads:[{"url":"https://notebook.drmaciver.com/","q":"h2 a"},{"url":"https://notebook.drmaciver.com/","q":"ul li a"}]
+
+root:https://sortingsearching.com
+pubDateTag:.dt-published
+payloads:[{"url":"https://sortingsearching.com/","q":".post-link"}]
+
+root:https://blog.quarkslab.com
+pubDateTag:
+payloads:[{"url":"https://blog.quarkslab.com/index.html","q":"h1 a","pg_url":"https://blog.quarkslab.com/index$replace.html","pg_count":14}]
+
+root:https://invertedpassion.com
+pubDateTag:.entry-date .published .updated
+payloads:[{"url":"https://invertedpassion.com/","q":".entry-title a","pg_url":"https://invertedpassion.com/page/$replace/","pg_count":52}]
+
+root:https://paulstamatiou.com
+pubDateTag:.date .published
+payloads:[{"url":"https://paulstamatiou.com/posts/","q":".entry-title a"}]
+
+root:
+pubDateTag:
+payloads:[{"url":"","q":""}]
+
+root:
+pubDateTag:
+payloads:[{"url":"","q":"","pg_url":"","pg_count":}]
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+RSS
+https://www.zachleat.com/web/feed/
+https://mxb.dev/feed.xml
+https://overreacted.io/rss.xml
+https://adamwathan.me/rss/index.xml
+https://www.ribbonfarm.com/feed/
+
+Missing RSS
+http://paulgraham.com/articles.html
+https://arkwright.github.io
+
+
+https://trivial.observer
+http://bitwalker.org
+https://robert.winter.ink
+https://www.zainrizvi.io
+https://macwright.com
+https://lemire.me
+https://fzakaria.com
+https://deploy.live
+https://invertedpassion.com
+
+
+xxx
+https://drewdevault.com
+https://emersion.fr
+https://ptimofeev.com
+https://sgolem.com
+https://notebook.drmaciver.com
+https://sortingsearching.com
+https://blog.quarkslab.com
+https://paulstamatiou.com

@@ -7,8 +7,8 @@ const { scrape } = require('../lib/myscraper')
 const { crawl } = require('../lib/mycrawler')
 const rdb = require('../lib/redisdb')
 const redisearch = require('../lib/redisearch')
-const Axios = require('axios')
-const rss = require('../lib/rss')
+// const Axios = require('axios')
+// const rss = require('../lib/rss')
 
 router.get('/', function(req, res, next) {
   res.json({ title: 'Hi! from server' });
@@ -20,7 +20,7 @@ router.post('/register', async (req, res, next) => {
   // console.log(req.body.payloads)
   const host = await getHostName(req.body.root)
 
-  rdb.hset(`site:${host}`, req.body.root, req.body.payloads)
+  rdb.hset(`site:${host}`, req.body.root, JSON.stringify(req.body.payloads))
   rdb.hset(`site:${host}`, 'pubDateTag', req.body.pubDateTag ? req.body.pubDate : '')
   
   rdb.sadd('allsites', req.body.root)
@@ -30,7 +30,7 @@ router.post('/crawl', async (req, res, next) => {
     status: 'ok'
   })
   const host = await getHostName(req.body.site)
-  const payloads = await JSON.parse(await rdb.hget(`site:${host}`, req.body.site))
+  const payloads = JSON.parse(await rdb.hget(`site:${host}`, req.body.site))
   
   for (let i = 0; i < payloads.length; i++) {
     const item = payloads[i]
@@ -53,15 +53,16 @@ router.post('/index', async (req, res, next) => {
   })
   const host = await getHostName(req.body.site)
   const links = await rdb.hgetall(`links:${host}`)
-  const tag = await rdb.hget(`site:${host}`, 'pubDateTag')// await JSON.parse()
+  // const tag = await rdb.hget(`site:${host}`, 'pubDateTag')// await JSON.parse()
 
   for (let [url] of Object.entries(links)) {
     console.log('✅ ', url)
+
     await sleep(900)
-    const data = await scrape(url, tag)
+    const data = await scrape(url)
 
     redisearch.send_command('FT.ADD', ['rIdx', url, '1.0', 'REPLACE', 'PARTIAL',
-      'FIELDS', 'url', url, 'title', data.title, 'content', data.content, 'pubDate', data.pubDate
+      'FIELDS', 'url', url, 'title', data.title, 'content', data.content
     ]).catch(err => console.log('err ', err))
 
     const exists = await rdb.hget('links', url)
