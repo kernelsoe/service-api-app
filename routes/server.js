@@ -213,7 +213,7 @@ router.post('/submitRSS', async (req, res, next) => {
       // for building rss
       rdb.sadd(`rssbuild:${domain}`, link)
       // for building random rss
-      rdb.sadd(`allrss:rand`, link)
+      if (i < 10) rdb.sadd(`allrss:rand`, link)
       // for (let [key, value] of Object.entries(item)) {
       // }
     }

@@ -7,7 +7,7 @@ const api = 'https://compass-sh.azurewebsites.net'
 
 async function run () {
   for (let i = 0; i < payloads.length; i++) {
-    await sleep(1000)
+    await sleep(300)
     const item = payloads[i]
 
     const { data } = await Axios.post(`${api}/sh/index`, {
