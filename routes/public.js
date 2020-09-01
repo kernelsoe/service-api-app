@@ -24,9 +24,15 @@ router.get('/search', async (req, res, next) => {
   // })
 
   console.log(data)
-  res.json({
-    data: data
-  })
+  if (data.length) {
+    res.json({
+      data: data
+    })
+  } else {
+    res.json({
+      data: 0
+    })
+  }
 })
 
 router.post('/submit', async (req, res, next) => {
