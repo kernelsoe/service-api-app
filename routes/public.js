@@ -65,9 +65,15 @@ router.get('/checkUname', async function(req, res, next) {
   }
 });
 
+router.get('/allsites', async function(req, res, next) {
+  const sites = await rdb.smembers('allsites')
+  res.json({
+    sites
+  });
+});
+
 router.get('/', function(req, res, next) {
   res.json({ title: 'Hi!' });
-  
 });
 // ✅
 // router.post('/commit', async (req, res, next) => {
