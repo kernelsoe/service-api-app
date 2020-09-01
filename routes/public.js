@@ -8,6 +8,8 @@ const redisearch = require('../lib/redisearch')
 const { getHostName } = require('../lib/sh');
 const { scrape } = require('../lib/scraper')
 
+const disallowed_unames = require('../lib/disallowed_unames')
+
 router.get('/search', async (req, res, next) => {
   const count = req.query.count > 300 ? 300 : req.query.count
   const data = await redisearch.send_command('FT.SEARCH', [
@@ -28,14 +30,34 @@ router.get('/search', async (req, res, next) => {
 })
 
 router.post('/submit', async (req, res, next) => {
-  console.log(req.body)
+  console.log(req.body.links)
   
   res.json({
     status: 'ok'
   })
 
-  rdb.zadd('submissions', req.body.ts, req.body.link)
+  rdb.zadd('submissions', req.body.ts, req.body.links)
 })
+
+router.get('/checkUname', async function(req, res, next) {
+  if (disallowed_unames.includes(req.query.uname)) {
+    res.json({
+      status: true
+    })
+    return
+  }
+
+  const user = await rdb.hget('uIds', req.query.uname).catch(next)
+  if (user) {
+    res.json({
+      status: true
+    })
+  } else {
+    res.json({
+      status: false
+    })
+  }
+});
 
 router.get('/', function(req, res, next) {
   res.json({ title: 'Hi!' });
@@ -83,7 +105,7 @@ router.get('/', function(req, res, next) {
 //           }
 //         })
 //     })
-  
+
 //     // index url if nx
 //     rdb.hget(`links:${domain}`, url)
 //       .then(async (exists) => {
