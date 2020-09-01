@@ -61,6 +61,7 @@ router.get('/checkUname', async function(req, res, next) {
 
 router.get('/', function(req, res, next) {
   res.json({ title: 'Hi!' });
+  
 });
 // ✅
 // router.post('/commit', async (req, res, next) => {
