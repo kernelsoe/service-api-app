@@ -13,7 +13,7 @@ const serverRouter = require('./routes/sh')
 var app = express();
 
 // 🔥 $change origin 🔥
-const whitelist = ['http://localhost:3000', 'http://localhost:8080', 'https://postel-asia.web.app', 'https://postel-app.web.app', 'https://portel-app.web.app']
+const whitelist = ['https://portel.app', 'http://localhost:3000', 'http://localhost:8080', 'https://postel-asia.web.app', 'https://postel-app.web.app', 'https://portel-app.web.app']
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -50,7 +50,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.json({
-    status: 'error'
+    status: 'sunny☀️'
   });
 });
 
