@@ -90,6 +90,14 @@ router.get('/allsites', async function(req, res, next) {
 router.get('/', function(req, res, next) {
   res.json({ title: 'Hi!' });
 });
+
+router.get('/getRSS', async (req, res, next) => {
+  const data = await rdb.hgetall(`rss:${req.query.d}`)
+
+  res.json({
+    rss: data
+  })
+})
 // ✅
 // router.post('/commit', async (req, res, next) => {
 //   // const timestamp = new Date().getTime()

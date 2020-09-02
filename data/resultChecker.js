@@ -12,10 +12,10 @@ async function run () {
     console.log(`@url:${domain}`)
 
     await sleep(300)
-    const { data } = await Axios.get(`${api}/search?q=@url:${domain}&offset=0&count=10`)
+    // const { data } = await Axios.get(`${api}/search?q=@url:${domain}&offset=0&count=10`)
 
-    if (data.data.length) console.log(`✅ ${item.root} => ${data.data}`)
-    else console.log(`🔥 ${item.root} => ${data.data.length}`)
+    // if (data.data.length) console.log(`✅ ${item.root} => ${data.data}`)
+    // else console.log(`🔥 ${item.root} => ${data.data.length}`)
   }
 }
 
