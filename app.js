@@ -13,19 +13,19 @@ const serverRouter = require('./routes/sh')
 var app = express();
 
 // 🔥 $change origin 🔥
-// const whitelist = ['*', 'https://portel.app', 'http://localhost:3000', 'http://localhost:8080', 'https://postel-asia.web.app', 'https://postel-app.web.app', 'https://portel-app.web.app']
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true)
-//     } else {
-//       callback(new Error('Not allowed by CORS'))
-//     }
-//   },
-//   // origin: 'http://localhost:8080',
-//   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-// };
-// app.use(cors(corsOptions));
+const whitelist = ['*', 'https://portel.app', 'http://localhost:3000', 'http://localhost:8080', 'https://postel-asia.web.app', 'https://postel-app.web.app', 'https://portel-app.web.app']
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  // origin: 'http://localhost:8080',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use('*', cors(corsOptions));
 
 app.use(logger('dev'));
 app.use(express.json());

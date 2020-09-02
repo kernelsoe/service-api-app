@@ -11,11 +11,11 @@ async function run () {
     const domain = await getHostName(item.root)
     console.log(`@url:${domain}`)
 
-    // await sleep(300)
-    // const { data } = await Axios.get(`${api}/search?q=@url${domain}&offset=0&count=1`)
+    await sleep(300)
+    const { data } = await Axios.get(`${api}/search?q=@url:${domain}&offset=0&count=10`)
 
-    // if (data.data.length) console.log(`✅ ${item.root} => ${data.data.length}`)
-    // else console.log(`🔥 ${item.root} => ${data.data.length}`)
+    if (data.data.length) console.log(`✅ ${item.root} => ${data.data}`)
+    else console.log(`🔥 ${item.root} => ${data.data.length}`)
   }
 }
 
