@@ -2,8 +2,8 @@ const { payloads } = require('./_crawl_payloads')
 const Axios = require('axios')
 const { sleep, getHostName } = require('../lib/sh')
 
-const api = 'http://localhost:5000'
-// const api = 'https://compass-sh.azurewebsites.net'
+// const api = 'http://localhost:5000'
+const api = 'https://compass-sh.azurewebsites.net'
 
 async function run () {
   for (let i = 0; i < payloads.length; i++) {
