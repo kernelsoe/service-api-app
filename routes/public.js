@@ -33,6 +33,9 @@ router.get('/search', async (req, res, next) => {
       data: 0
     })
   }
+
+  // LOG Query
+  rdb.xadd('qlogs', '*', 'q', req.query.q, 'hits', data[0])
 })
 
 router.post('/submit', async (req, res, next) => {
@@ -66,7 +69,19 @@ router.get('/checkUname', async function(req, res, next) {
 });
 
 router.get('/allsites', async function(req, res, next) {
-  const sites = await rdb.smembers('allsites')
+  const data = await rdb.smembers('allsites')
+  const sites = []
+
+  for (let i = 0; i < data.length; i++) {
+    const domain = await getHostName(data[i])
+    // console.log(domain)
+
+    sites.push({
+      site: data[i],
+      rss: await rdb.hget(`site:${domain}`, 'rss')
+    })
+  }
+
   res.json({
     sites
   });

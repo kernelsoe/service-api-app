@@ -21,7 +21,8 @@ router.post('/register', async (req, res, next) => {
   const host = await getHostName(req.body.root)
 
   rdb.hset(`site:${host}`, req.body.root, JSON.stringify(req.body.payloads))
-  rdb.hset(`site:${host}`, 'pubDateTag', req.body.pubDateTag ? req.body.pubDate : '')
+  rdb.hset(`site:${host}`, 'rss', req.body.rss)
+  // rdb.hset(`site:${host}`, 'pubDateTag', req.body.pubDateTag ? req.body.pubDate : '')
   
   rdb.sadd('allsites', req.body.root)
 })
@@ -62,7 +63,7 @@ router.post('/index', async (req, res, next) => {
     const data = await scrape(url)
 
     redisearch.send_command('FT.ADD', ['rIdx', url, '1.0', 'REPLACE', 'PARTIAL',
-      'FIELDS', 'url', url, 'title', data.title, 'content', data.content
+      'FIELDS', 'url', url, 'title', data.title, 'content', data.content, 'tags', ''
     ]).catch(err => console.log('err ', err))
 
     const exists = await rdb.hget('links', url)
