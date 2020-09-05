@@ -92,7 +92,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/getRSS', async (req, res, next) => {
-  const data = await rdb.hgetall(`readrss:${req.query.d}`)
+  const data = await rdb.zrevrange(`readrss:${req.query.d}`, 0, -1)
 
   res.json({
     rss: data
